@@ -1,92 +1,6 @@
 # Responsavel pelo projeto: Enzo Henrique Alvarez Silva
+# Modulo 4 - RH
 
-#   Modulo financeiro
-despesas = {}
-total_carros_produzidos = 0
-
-
-def cadastrar_despesas():
-    global despesas, total_carros_produzidos
-
-    print("\n===== Cadastro de despesas fixas =====")
-    agua      = float(input("  Agua (R$): "))
-    luz       = float(input("  Luz (R$): "))
-    salarios  = float(input("  Salarios (R$): "))
-    impostos  = float(input("  Impostos (R$): "))
-
-    despesas = {
-        "agua":     agua,
-        "luz":      luz,
-        "salarios": salarios,
-        "impostos": impostos
-    }
-
-    total_carros_produzidos = int(input("  Total de carros produzidos no mes: "))
-    print("[OK]: Despesas cadastradas com sucesso!")
-
-
-def calcular_total_despesas():
-    total = 0
-    for chave in despesas:
-        total += despesas[chave]
-    return total
-
-
-def calcular_custo_por_carro():
-    if total_carros_produzidos == 0:
-        return 0
-    return calcular_total_despesas() / total_carros_produzidos
-
-
-def calcular_preco_venda():
-    custo = calcular_custo_por_carro()
-    return custo * 1.5
-
-
-def relatorio_financeiro():
-    if len(despesas) == 0:
-        print("\n[AVISO]: Nenhuma despesa cadastrada ainda.")
-        return
-
-    total       = calcular_total_despesas()
-    custo_carro = calcular_custo_por_carro()
-    preco_venda = calcular_preco_venda()
-
-    print("\nCARANGOS S/A - RELATORIO FINANCEIRO")
-    print("=====================================")
-    print("\nDESPESAS FIXAS:")
-    print(f"  Agua            : R$ {despesas['agua']:>10.2f}")
-    print(f"  Luz             : R$ {despesas['luz']:>10.2f}")
-    print(f"  Salarios        : R$ {despesas['salarios']:>10.2f}")
-    print(f"  Impostos        : R$ {despesas['impostos']:>10.2f}")
-    print(f"  Total           : R$ {total:>10.2f}")
-
-    print(f"\nCALCULO POR CARRO: ")
-    print(f"  Carros produzidos  : {total_carros_produzidos}")
-    print(f"  Custo por carro    : R$ {custo_carro:>10.2f}")
-    print(f"  Preco de venda     : R$ {preco_venda:>10.2f}  (50% de lucro)")
-    print(f"  Lucro por carro    : R$ {preco_venda - custo_carro:>10.2f}")
-    print("=====================================\n")
-
-
-def menu_financeiro():
-    while True:
-        print("\n-- Menu financeiro --")
-        print("  [1] Cadastrar despesas")
-        print("  [2] Ver relatorio financeiro")
-        print("  [0] Voltar")
-        opcao = input("  Escolha: ")
-
-        if opcao == "1":
-            cadastrar_despesas()
-        elif opcao == "2":
-            relatorio_financeiro()
-        elif opcao == "0":
-            break
-        else:
-            print("[AVISO]: Opcao invalida.")
-
-#   modulo RH
 funcionarios = []
 proximo_id_func = 1
 
@@ -168,7 +82,7 @@ def calcular_salario_funcionario(func, horas_trabalhadas):
     valor_hora = func["valor_hora"]
     cargo      = func["cargo"]
 
-    # horas extras so para quem nao é gerente nem diretor
+    # horas extras so para quem nao e gerente nem diretor
     if cargo != "gerente" and cargo != "diretor":
         if horas_trabalhadas > HORAS_NORMAIS_MES:
             horas_extras  = horas_trabalhadas - HORAS_NORMAIS_MES
@@ -180,20 +94,20 @@ def calcular_salario_funcionario(func, horas_trabalhadas):
         horas_extras  = 0
         horas_normais = horas_trabalhadas
 
-    salario_bruto  = (horas_normais * valor_hora) + (horas_extras * valor_hora * 1.5)
-    inss           = calcular_inss(salario_bruto)
-    base_irpf      = salario_bruto - inss
-    irpf           = calcular_irpf(base_irpf)
+    salario_bruto   = (horas_normais * valor_hora) + (horas_extras * valor_hora * 1.5)
+    inss            = calcular_inss(salario_bruto)
+    base_irpf       = salario_bruto - inss
+    irpf            = calcular_irpf(base_irpf)
     salario_liquido = salario_bruto - inss - irpf
 
     return {
-        "horas_normais":  horas_normais,
-        "horas_extras":   horas_extras,
-        "salario_bruto":  salario_bruto,
-        "inss":           inss,
-        "irpf":           irpf,
+        "horas_normais":   horas_normais,
+        "horas_extras":    horas_extras,
+        "salario_bruto":   salario_bruto,
+        "inss":            inss,
+        "irpf":            irpf,
         "salario_liquido": salario_liquido,
-        "paga_ir":        irpf > 0
+        "paga_ir":         irpf > 0
     }
 
 
@@ -239,7 +153,6 @@ def relatorio_rh():
     print("  " + "-" * 60)
 
     for f in funcionarios:
-        # usa 220 horas como base para o relatorio
         resultado = calcular_salario_funcionario(f, HORAS_NORMAIS_MES)
         paga_ir = "Sim" if resultado["paga_ir"] else "Nao"
         print(
@@ -275,24 +188,6 @@ def menu_rh():
         else:
             print("[AVISO] Opcao invalida.")
 
-#   menu geral para financeiro e rh
-def menu_financeiro_rh():
-    while True:
-        print("\n-- Menu financeiro e RH --")
-        print("  [1] Modulo 3 - Financeiro")
-        print("  [2] Modulo 4 - RH")
-        print("  [0] Voltar")
-        opcao = input("  Escolha: ")
-
-        if opcao == "1":
-            menu_financeiro()
-        elif opcao == "2":
-            menu_rh()
-        elif opcao == "0":
-            break
-        else:
-            print("[AVISO] Opcao invalida.")
-
 
 if __name__ == "__main__":
-    menu_financeiro_rh()
+    menu_rh()

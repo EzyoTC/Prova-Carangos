@@ -1,9 +1,10 @@
 # Responsavel pelo projeto: Enzo Henrique Alvarez Silva
-# menu geral que conecta todos os modulos
+# Menu geral - conecta todos os modulos
 
 import operacional
 import estoque
-import financeiro_rh
+import financeiro
+import rh
 
 
 def exibir_menu_geral():
@@ -34,10 +35,10 @@ def iniciar():
             estoque.menu_estoque()
 
         elif opcao == "3":
-            financeiro_rh.menu_financeiro()
+            financeiro.menu_financeiro()
 
         elif opcao == "4":
-            financeiro_rh.menu_rh()
+            rh.menu_rh()
 
         elif opcao == "0":
             print("Encerrando sistema. Ate logo!")
